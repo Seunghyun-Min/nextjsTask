@@ -1,33 +1,89 @@
-import AcmeLogo from '@/app/ui/acme-logo';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+"use client";
+import "./ui/top.css";
+import { useState } from "react";
 
-export default function Page() {
+export default function LoginPage() {
+  const [shaincode, setShaincode] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!shaincode.trim()) {
+      alert("社員コードを入力してください。");
+      return;
+    }
+
+    if (!password.trim()) {
+      alert("パスワードを入力してください。");
+      return;
+    }
+
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ shaincode, password }),
+    });
+
+    if (res.ok) {
+      // ログイン成功時の遷移（例：dashboard）
+      window.location.href = "/dashboard";
+    } else {
+      setError("社員コード、またはパスワードが正しくありません。");
+    }
+  };
+
   return (
-    <main className="flex min-h-screen flex-col p-6">
-      <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-52">
-        {/* <AcmeLogo /> */}
+    <div>
+      <div className="header">
+        <div className="header-title">ログイン</div>
       </div>
-      <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
-        <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
-          <p className={`text-xl text-gray-800 md:text-3xl md:leading-normal`}>
-            <strong>Welcome to Acme.</strong> This is the example for the{' '}
-            <a href="https://nextjs.org/learn/" className="text-blue-500">
-              Next.js Learn Course
-            </a>
-            , brought to you by Vercel.
-          </p>
-          <Link
-            href="/login"
-            className="flex items-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
-          >
-            <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
-          </Link>
-        </div>
-        <div className="flex items-center justify-center p-6 md:w-3/5 md:px-28 md:py-12">
-          {/* Add Hero Images Here */}
-        </div>
+
+      <div className="body">
+        <form onSubmit={handleSubmit} className="loginForm">
+          <table className="codeAndPassword">
+            <tbody>
+              <tr>
+                <td>社員コード：</td>
+                <td>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={shaincode}
+                    onChange={(e) =>
+                      setShaincode(e.target.value.replace(/[^0-9]/g, ""))
+                    }
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>パスワード：</td>
+                <td>
+                  <input
+                    type="password"
+                    maxLength={10}
+                    value={password}
+                    onChange={(e) =>
+                      setPassword(e.target.value.replace(/[^a-zA-Z0-9]/g, ""))
+                    }
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className="loginbuttoncontainer">
+            <button type="submit" className="loginbutton">
+              ログイン
+            </button>
+          </div>
+
+          {error && (
+            <p style={{ color: "red", textAlign: "center" }}>{error}</p>
+          )}
+        </form>
       </div>
-    </main>
+    </div>
   );
 }

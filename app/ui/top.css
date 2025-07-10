@@ -1,0 +1,54 @@
+/* ui/top.css */
+
+/* 画面全体の色 */
+body {
+  background-color: rgb(204, 255, 255);
+}
+
+/* タイトル部分 */
+.header {
+  border-bottom: solid 2px;
+  display: flex;
+}
+
+.header-title {
+  font-size: 5vh;
+  padding-top: 1%;
+  padding-left: 5%;
+  padding-bottom: 1%;
+  white-space: nowrap;
+}
+
+/* inputの高さの設定 */
+input {
+  height: 20pt;
+}
+
+/* 社員コードとパスワード入力部分 */
+.codeAndPassword {
+  padding-left: 10%;
+  padding-top: 7%;
+  font-size: 25px;
+}
+
+/* ログインボタンの囲み */
+.loginbuttoncontainer {
+  padding-top: 2%;
+  text-align: center;
+}
+
+/* ログインボタン */
+.loginbutton {
+  width: 20vh;
+  height: 5vh;
+  font-size: 25px;
+}
+
+/* ダイアログ用 */
+.dialog {
+  position: absolute;
+  top: 40%;
+  width: 15%;
+  height: 12%;
+  text-align: center;
+}
