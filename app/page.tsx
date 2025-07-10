@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function LoginPage() {
   const [shaincode, setShaincode] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  //const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,14 +23,14 @@ export default function LoginPage() {
     const res = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ shaincode, password }),
+      body: JSON.stringify({ shain_code: shaincode, password }),
     });
 
     if (res.ok) {
-      // ログイン成功時の遷移（例：dashboard）
-      window.location.href = "/dashboard";
+      // ログイン成功時に社員一覧画面に遷移
+      window.location.href = "/employeesList";
     } else {
-      setError("社員コード、またはパスワードが正しくありません。");
+      alert("社員コード、またはパスワードが正しくありません。");
     }
   };
 
@@ -78,10 +78,6 @@ export default function LoginPage() {
               ログイン
             </button>
           </div>
-
-          {error && (
-            <p style={{ color: "red", textAlign: "center" }}>{error}</p>
-          )}
         </form>
       </div>
     </div>

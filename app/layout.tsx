@@ -1,3 +1,5 @@
+//後で余裕あればMetadata作成 export const metadata: Metadata = {...}
+
 export default function RootLayout({
   children,
 }: {
