@@ -21,8 +21,9 @@ export async function executeLogin(shain_code: string, password: string) {
 export async function fetchAllShain(): Promise<shain[]> {
   try {
     const result = await sql<shain[]>`
-      SELECT * FROM shain
+      SELECT * FROM shain ORDER BY shain_code
     `;
+    console.log("取得した社員データ：", result);
     return result;
   } catch (error) {
     console.error("Database Error:", error);
