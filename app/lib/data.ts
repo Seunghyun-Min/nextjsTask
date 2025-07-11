@@ -1,10 +1,10 @@
 //Next.jsのdata.ts = JSPのDAO
 import postgres from "postgres";
-import { eigyo } from "./definitions";
-//import { formatCurrency } from "./utils";
+import { eigyo, shain } from "./definitions";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
+//top画面のログイン機能
 export async function executeLogin(shain_code: string, password: string) {
   try {
     const result = await sql<eigyo[]>`
@@ -14,5 +14,18 @@ export async function executeLogin(shain_code: string, password: string) {
   } catch (error) {
     console.error("Database Error:", error);
     throw new Error("Failed to Login.");
+  }
+}
+
+//employeesList画面のログイン機能
+export async function fetchAllShain(): Promise<shain[]> {
+  try {
+    const result = await sql<shain[]>`
+      SELECT * FROM shain
+    `;
+    return result;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch shain list.");
   }
 }
