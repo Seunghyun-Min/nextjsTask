@@ -1,9 +1,10 @@
-import React from "react";
-//import { Employee } from "../employees/page";
+// app/ui/EmployeesInfoTable.tsx
+import { shain } from "@/app/lib/definitions";
 
-export default function EmployeesInfoTable({}: //  employees,
-{
-  // employees: Employee[];
+export default function EmployeesInfoTable({
+  employees,
+}: {
+  employees: shain[];
 }) {
   return (
     <table className="employeeslist" border={1}>
@@ -22,23 +23,39 @@ export default function EmployeesInfoTable({}: //  employees,
         </tr>
       </thead>
       <tbody>
-        {/* {employees.map((emp) => (
-          <tr key={emp.code}>
+        {employees.map((emp) => (
+          <tr key={emp.shain_code}>
             <td>
-              <input type="radio" name="employee" value={emp.code} />
+              <input type="radio" name="employee" value={emp.shain_code} />
             </td>
-            <td>{emp.name}</td>
-            <td>{emp.birth}</td>
-            <td>{emp.age}</td>
-            <td>{emp.experience}</td>
-            <td>{emp.gender}</td>
-            <td>{emp.address}</td>
-            <td>{emp.line}</td>
-            <td>{emp.station}</td>
-            <td>{emp.certificate}</td>
+            <td>{emp.shain_shimei}</td>
+            <td>{formatDate(emp.seinen_gappi)}</td>
+            <td>{calculateAge(emp.seinen_gappi)} 歳</td>
+            <td>{emp.keiken_nensu} 年</td>
+            <td>{emp.seibetsu === "0" ? "男" : "女"}</td>
+            <td>{emp.jyusho}</td>
+            <td>{emp.moyorieki_sen ?? ""}</td>
+            <td>{emp.moyorieki_eki ?? ""}</td>
+            <td>{emp.shikaku ?? ""}</td>
           </tr>
-        ))} */}
+        ))}
       </tbody>
     </table>
   );
+}
+
+function formatDate(dateString: string) {
+  const d = new Date(dateString);
+  return d.toLocaleDateString(); // YYYY/MM/DD形式などに整形
+}
+
+function calculateAge(dateString: string) {
+  const birth = new Date(dateString);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  return age;
 }

@@ -68,6 +68,7 @@
   height: 50%;
   background-color: white;
   white-space: nowrap;
+  margin: 0 auto;
 }
 
 /*社員一覧画面-表の最上段桁の色又は高さ設定*/
