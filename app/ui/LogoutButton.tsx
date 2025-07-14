@@ -3,10 +3,10 @@
 import React from "react";
 
 export default function LogoutButton() {
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (confirm("ログアウトしますが、よろしいですか？")) {
-      // ここに実際のログアウト処理（API呼び出しなど）
-      alert("ログアウトしました");
+      await fetch("/api/logout", { method: "POST" });
+      window.location.href = "/";
     }
   };
 

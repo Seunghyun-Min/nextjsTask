@@ -12,14 +12,8 @@ export default async function EmployeesPage() {
   const cookieStore = await cookies();
   const shainCode = cookieStore.get("shain_code")?.value;
 
-  console.log(
-    "ς( ˶ᵔөᵔ˶ς)*̥₊˚ログイン中の社員コード:",
-    shainCode,
-    "ς( ˶ᵔөᵔ˶ς)*̥₊˚"
-  );
-
   if (!shainCode) {
-    redirect("/login");
+    redirect("/");
   }
 
   // データベースから社員情報を取得（サーバー側で実行）
