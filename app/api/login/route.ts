@@ -1,7 +1,7 @@
 //Next.jsのroute.ts = JSPのServlet
 import { executeLogin } from "@/app/lib/data";
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
+//import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   const { shain_code, password } = await req.json();
