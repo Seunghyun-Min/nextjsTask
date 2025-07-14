@@ -30,8 +30,8 @@ export default function EmployeesInfoTable({
             </td>
             <td>{emp.shain_shimei}</td>
             <td>{formatDate(emp.seinen_gappi)}</td>
-            <td>{calculateAge(emp.seinen_gappi)} 歳</td>
-            <td>{emp.keiken_nensu} 年</td>
+            <td>{calculateAge(emp.seinen_gappi)}</td>
+            <td>{emp.keiken_nensu}</td>
             <td>{emp.seibetsu === "0" ? "男" : "女"}</td>
             <td>{emp.jyusho}</td>
             <td>{emp.moyorieki_sen ?? ""}</td>
@@ -44,9 +44,17 @@ export default function EmployeesInfoTable({
   );
 }
 
+// function formatDate(dateString: string) {
+//   const d = new Date(dateString);
+//   return d.toLocaleDateString(); // YYYY/MM/DD形式などに整形
+// }
+
 function formatDate(dateString: string) {
   const d = new Date(dateString);
-  return d.toLocaleDateString(); // YYYY/MM/DD形式などに整形
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function calculateAge(dateString: string) {

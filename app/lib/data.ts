@@ -23,7 +23,7 @@ export async function fetchAllShain(): Promise<shain[]> {
     const result = await sql<shain[]>`
       SELECT * FROM shain ORDER BY shain_code
     `;
-    console.log("取得した社員データ：", result);
+    //console.log("取得した社員データ：", result);
     return result;
   } catch (error) {
     console.error("Database Error:", error);

@@ -4,7 +4,7 @@ import React from "react";
 
 export default function LogoutButton() {
   const handleLogout = () => {
-    if (confirm("ログアウトしますか？")) {
+    if (confirm("ログアウトしますが、よろしいですか？")) {
       // ここに実際のログアウト処理（API呼び出しなど）
       alert("ログアウトしました");
     }
