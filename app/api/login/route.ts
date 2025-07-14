@@ -1,6 +1,7 @@
 //Next.jsのroute.ts = JSPのServlet
 import { executeLogin } from "@/app/lib/data";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   const { shain_code, password } = await req.json();
@@ -15,7 +16,14 @@ export async function POST(req: Request) {
   const success = await executeLogin(shain_code, password);
 
   if (success) {
-    return NextResponse.json({ success: true });
+    const response = NextResponse.json({ success: true });
+    response.cookies.set("shain_code", shain_code, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 0.5,
+      path: "/",
+    });
+
+    return response;
   } else {
     return NextResponse.json({ success: false }, { status: 401 });
   }

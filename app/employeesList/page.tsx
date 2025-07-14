@@ -4,8 +4,24 @@ import SearchForm from "@/app/ui/SearchForm";
 import "../ui/employeesList.css";
 import LogoutButton from "@/app/ui/LogoutButton";
 import ManipulateButtons from "@/app/ui/ManipulateButtons";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function EmployeesPage() {
+  // ✅ セッション確認：shain_codeがcookieに存在しない場合はログインへリダイレクト
+  const cookieStore = await cookies();
+  const shainCode = cookieStore.get("shain_code")?.value;
+
+  console.log(
+    "ς( ˶ᵔөᵔ˶ς)*̥₊˚ログイン中の社員コード:",
+    shainCode,
+    "ς( ˶ᵔөᵔ˶ς)*̥₊˚"
+  );
+
+  if (!shainCode) {
+    redirect("/login");
+  }
+
   // データベースから社員情報を取得（サーバー側で実行）
   const employees = await fetchAllShain();
 
