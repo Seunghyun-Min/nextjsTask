@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function SearchForm({ onSearch }: { onSearch: () => void }) {
   //ここでconst + input名実装（社員名称、経験年数等々）
