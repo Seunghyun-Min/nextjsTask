@@ -29,3 +29,23 @@ export type shain = {
   update_date: string; // 更新日
   update_shain_code: string; // 更新した社員のコード
 };
+
+export type keireki = {
+  keireki_id: string; // varchar(3)
+  shain_code: string; // varchar(6)
+  kikan_kaishi: string; // varchar(6)
+  kikanshuryo: string | null; // varchar(6) / null
+  shokushu: string; // varchar(40)
+  gyoumu_naiyo: string; // varchar(200)
+  kishu1: string; // varchar(40)
+  kishu2: string | null; // varchar(40) / null
+  kishu3: string | null; // varchar(40) / null
+  os_db1: string; // varchar(40)
+  os_db2: string | null; // varchar(40) / null
+  os_db3: string | null; // varchar(40) / null
+  gengo1: string; // varchar(40)
+  gengo2: string | null; // varchar(40) / null
+  gengo3: string | null; // varchar(40) / null
+  update_date: string; // SQL上は date だが、JavaScriptでは string で扱う（format: YYYY-MM-DD）
+  update_shain_code: string; // varchar(6)
+};
