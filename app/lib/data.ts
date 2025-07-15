@@ -1,6 +1,7 @@
 //Next.jsのdata.ts = JSPのDAO
 import postgres from "postgres";
 import { eigyo, shain } from "./definitions";
+import type { shainWithKeireki } from "./definitions";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
@@ -31,9 +32,9 @@ export async function executeLogin(shain_code: string, password: string) {
 //   }
 // }
 
-export async function fetchAllShain(): Promise<shain[]> {
+export async function fetchAllShain(): Promise<shainWithKeireki[]> {
   try {
-    const result = await sql<shain[]>`
+    const result = await sql<shainWithKeireki[]>`
       SELECT *
       FROM shain
       JOIN keireki

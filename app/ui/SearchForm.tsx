@@ -1,9 +1,30 @@
+//app/ui/SearchForm.tsx
 "use client";
 
 import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function SearchForm({ onSearch }: { onSearch: () => void }) {
+// 検索条件型 後で修正！！！！
+export type SearchCriteria = {
+  employeename?: string;
+  closeststationline?: string;
+  closeststationstation?: string;
+  careeryear?: string;
+  gender?: "0" | "1";
+  agelowerlimit?: string;
+  ageupperlimit?: string;
+  kishu?: string;
+  os?: string;
+  certificate?: string;
+  language?: string;
+};
+// 検索条件型　後で修正！！！！
+
+export default function SearchForm({
+  onSearch,
+}: {
+  onSearch: (criteria: SearchCriteria) => void;
+}) {
   //ここでconst + input名実装（社員名称、経験年数等々）
   const [employeename, setEmployeename] = useState("");
   const [closeststationline, setCloseststationline] = useState("");
@@ -15,6 +36,7 @@ export default function SearchForm({ onSearch }: { onSearch: () => void }) {
   const [os, setOs] = useState("");
   const [certificate, setCertificate] = useState("");
   const [language, setLanguage] = useState("");
+  const [gender, setGender] = useState<"0" | "1" | "">("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,7 +117,22 @@ export default function SearchForm({ onSearch }: { onSearch: () => void }) {
       return;
     }
 
-    onSearch();
+    // 検索条件オブジェクト
+    const criteria: SearchCriteria = {
+      employeename,
+      closeststationline,
+      closeststationstation,
+      careeryear,
+      gender: gender !== "" ? gender : undefined,
+      agelowerlimit,
+      ageupperlimit,
+      kishu: model,
+      os,
+      certificate,
+      language,
+    };
+
+    onSearch(criteria);
   };
 
   return (
@@ -141,8 +178,24 @@ export default function SearchForm({ onSearch }: { onSearch: () => void }) {
                 type="text"
               />
               年 性別：
-              <input type="radio" value="0" name="gender" />男
-              <input type="radio" value="1" name="gender" />女
+              {/* <input type="radio" value="0" name="gender" />男
+              <input type="radio" value="1" name="gender" />女 */}
+              <input
+                type="radio"
+                value="0"
+                name="gender"
+                checked={gender === "0"}
+                onChange={(e) => setGender(e.target.value as "0" | "1")}
+              />
+              男
+              <input
+                type="radio"
+                value="1"
+                name="gender"
+                checked={gender === "1"}
+                onChange={(e) => setGender(e.target.value as "0" | "1")}
+              />
+              女
             </td>
             <td>機種：</td>
             <td>

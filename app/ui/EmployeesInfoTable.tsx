@@ -1,5 +1,6 @@
 // app/ui/EmployeesInfoTable.tsx
 import { shain } from "@/app/lib/definitions";
+//import { shainWithKeireki } from "@/app/lib/definitions";
 
 export default function EmployeesInfoTable({
   employees,
@@ -37,6 +38,7 @@ export default function EmployeesInfoTable({
             <td>{emp.moyorieki_sen ?? ""}</td>
             <td>{emp.moyorieki_eki ?? ""}</td>
             <td>{emp.shikaku ?? ""}</td>
+            {/* <td>{emp.kishu1}</td> */}
           </tr>
         ))}
       </tbody>
