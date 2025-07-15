@@ -13,11 +13,19 @@ export default function EmployeesClientWrapper({
 }: {
   employees: shain[];
 }) {
+  const uniqueShainMap = new Map<string, shain>();
+  employees.forEach((emp) => {
+    if (!uniqueShainMap.has(emp.shain_code)) {
+      uniqueShainMap.set(emp.shain_code, emp);
+    }
+  });
+  const uniqueEmployees = Array.from(uniqueShainMap.values());
+
   const [filteredEmployees, setFilteredEmployees] =
-    useState<shain[]>(employees);
+    useState<shain[]>(uniqueEmployees);
 
   const handleSearch = (criteria: any) => {
-    const filtered = employees.filter((emp) => {
+    const filtered = uniqueEmployees.filter((emp) => {
       if (
         criteria.employeename &&
         !emp.shain_shimei.includes(criteria.employeename)
