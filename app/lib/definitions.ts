@@ -61,3 +61,17 @@ export type shainWithKeireki = shain & {
   gengo3: string | null;
   // 必要なら他のkeirekiカラムも追加
 };
+
+export type SearchCriteria = {
+  employeename?: string;
+  closeststationline?: string;
+  closeststationstation?: string;
+  careeryear?: string;
+  gender?: "0" | "1";
+  agelowerlimit?: string;
+  ageupperlimit?: string;
+  kishu?: string;
+  os?: string;
+  certificate?: string;
+  language?: string;
+};

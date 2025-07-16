@@ -21,30 +21,4 @@ export default async function EmployeesPage() {
   const employees = await fetchAllShain();
 
   return <EmployeesClientWrapper employees={employees} />;
-
-  // return (
-  //   <div className="body">
-  //     <div className="header">
-  //       <div className="header-title">社員一覧</div>
-  //       <div className="logoutbuttoncontainer">
-  //         <LogoutButton />
-  //       </div>
-  //     </div>
-
-  //     {/* 検索フォーム（クライアントコンポーネント） */}
-  //     <SearchForm />
-
-  //     {/* 社員情報がある場合のみ表示 */}
-  //     {employees.length > 0 ? (
-  //       <>
-  //         <h2 id="textDIV">社員一覧</h2>
-  //         <EmployeesInfoTable employees={employees} />
-  //       </>
-  //     ) : (
-  //       <p className="no-results">社員情報が見つかりませんでした。</p>
-  //     )}
-
-  //     <ManipulateButtons />
-  //   </div>
-  // );
 }

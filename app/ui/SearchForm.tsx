@@ -2,30 +2,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { useSearchParams } from "next/navigation";
-
-// 検索条件型 後で修正！！！！
-export type SearchCriteria = {
-  employeename?: string;
-  closeststationline?: string;
-  closeststationstation?: string;
-  careeryear?: string;
-  gender?: "0" | "1";
-  agelowerlimit?: string;
-  ageupperlimit?: string;
-  kishu?: string;
-  os?: string;
-  certificate?: string;
-  language?: string;
-};
-// 検索条件型　後で修正！！！！
+import { SearchCriteria } from "../lib/definitions";
 
 export default function SearchForm({
   onSearch,
 }: {
   onSearch: (criteria: SearchCriteria) => void;
 }) {
-  //ここでconst + input名実装（社員名称、経験年数等々）
+  //検索用input定義
   const [employeename, setEmployeename] = useState("");
   const [closeststationline, setCloseststationline] = useState("");
   const [closeststationstation, setCloseststationstation] = useState("");
@@ -38,6 +22,7 @@ export default function SearchForm({
   const [language, setLanguage] = useState("");
   const [gender, setGender] = useState<"0" | "1" | "">("");
 
+  //「検索」ボタン押した時の処理（入力値検査ー＞問題なければ検索実行）
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -135,6 +120,7 @@ export default function SearchForm({
     onSearch(criteria);
   };
 
+  //社員一覧画面の上段検索欄
   return (
     <form onSubmit={handleSubmit} className="searchform">
       <table className="employeessearch">
@@ -178,8 +164,6 @@ export default function SearchForm({
                 type="text"
               />
               年 性別：
-              {/* <input type="radio" value="0" name="gender" />男
-              <input type="radio" value="1" name="gender" />女 */}
               <input
                 type="radio"
                 value="0"

@@ -1,3 +1,4 @@
+//app/ui/EmplyeesClientWrapper.tsx
 "use client";
 
 import { useState } from "react";
@@ -27,24 +28,27 @@ export default function EmployeesClientWrapper({
 
   const handleSearch = (criteria: any) => {
     const filtered = employees.filter((emp) => {
+      //社員名称
       if (
         criteria.employeename &&
         !emp.shain_shimei.includes(criteria.employeename)
       )
         return false;
-
+      //最寄駅（線）
       if (
         criteria.closeststationline &&
-        !(emp.moyorieki_sen ?? "").includes(criteria.closeststationline)
+        !(emp.moyorieki_sen ?? "")
+          .toLowerCase()
+          .includes(criteria.closeststationline)
       )
         return false;
-
+      //最寄駅（駅）
       if (
         criteria.closeststationstation &&
         !(emp.moyorieki_eki ?? "").includes(criteria.closeststationstation)
       )
         return false;
-
+      //最寄駅（駅）
       if (
         criteria.kishu &&
         !(
@@ -54,7 +58,7 @@ export default function EmployeesClientWrapper({
         )
       )
         return false;
-
+      //OS・DB/DC
       if (
         criteria.os &&
         !(
@@ -64,13 +68,13 @@ export default function EmployeesClientWrapper({
         )
       )
         return false;
-
+      //資格
       if (
         criteria.certificate &&
-        !(emp.shikaku ?? "").includes(criteria.certificate)
+        !(emp.shikaku ?? "").toLowerCase().includes(criteria.certificate)
       )
         return false;
-
+      //言語
       if (
         criteria.language &&
         !(
@@ -80,13 +84,13 @@ export default function EmployeesClientWrapper({
         )
       )
         return false;
-
+      //経験年数
       if (
         criteria.careeryear &&
         emp.keiken_nensu !== Number(criteria.careeryear)
       )
         return false;
-
+      //年齢
       if (criteria.agelowerlimit || criteria.ageupperlimit) {
         const birthDate = new Date(emp.seinen_gappi);
         const today = new Date();
@@ -105,7 +109,7 @@ export default function EmployeesClientWrapper({
           return false;
         }
       }
-
+      //性別
       if (criteria.gender !== undefined && emp.seibetsu !== criteria.gender) {
         return false;
       }
