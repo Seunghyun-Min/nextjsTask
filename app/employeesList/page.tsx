@@ -1,14 +1,14 @@
 import { fetchAllShain } from "@/app/lib/data";
-import EmployeesInfoTable from "@/app/ui/EmployeesInfoTable";
-import SearchForm from "@/app/ui/SearchForm";
-import "../ui/employeesList.css";
-import LogoutButton from "@/app/ui/LogoutButton";
-import ManipulateButtons from "@/app/ui/ManipulateButtons";
+import EmployeesInfoTable from "@/app/ui/employeesList/EmployeesInfoTable";
+import SearchForm from "@/app/ui/employeesList/SearchForm";
+import "../ui/employeesList/employeesList.css";
+import LogoutButton from "@/app/ui/employeesList/LogoutButton";
+import ManipulateButtons from "@/app/ui/employeesList/ManipulateButtons";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import EmployeesClientWrapper from "@/app/ui/EmployeesClientWrapper";
+import EmployeesClientWrapper from "@/app/ui/employeesList/EmployeesClientWrapper";
 
-export default async function EmployeesPage() {
+export default async function EmployeesListPage() {
   // ✅ セッション確認：shain_codeがcookieに存在しない場合はログインへリダイレクト
   const cookieStore = await cookies();
   const shainCode = cookieStore.get("shain_code")?.value;

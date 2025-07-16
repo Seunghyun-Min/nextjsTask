@@ -1,0 +1,105 @@
+/*ログイン画面-社員コードとパスポート入力部分*/
+.codeAndPassword {
+  padding-left: 10%;
+  padding-top: 7%;
+  font-size: 25px;
+}
+
+/*社員一覧画面上段-ログインアウトボタン*/
+/* .logoutbuttoncontainer {
+  padding-top: 1.7%;
+  width: 25vh;
+  padding-left: 70%;
+} */
+
+/*社員一覧画面上段-ログインアウトボタン*/
+/* .logoutbutton {
+  width: 20vh;
+  height: 5vh;
+  font-size: 25px;
+} */
+
+/*社員一覧画面中段-入力する部分を囲むdivのデザイン*/
+.table-container {
+  display: flex;
+  justify-content: center;
+}
+
+/*社員一覧画面-入力する部分の表のデザイン*/
+.employeessearch {
+  margin-left: auto;
+  width: 90%;
+  font-size: 26px;
+}
+
+/*社員一覧画面-入力する部分のしたの「検索」ボタンを囲むdivのデザイン*/
+.searchbuttoncontainer {
+  display: flex;
+  width: 95%;
+  justify-content: flex-end;
+}
+
+/*社員一覧画面-入力する部分のしたの「検索」ボタンのデザイン*/
+.searchbutton {
+  width: 20vh;
+  height: 5vh;
+  font-size: 25px;
+}
+
+/*社員一覧画面-「検索」ボタンを押すと現れるテキスト*/
+.employeeslisttext {
+  margin-right: 79%;
+}
+
+/*社員一覧画面-「検索」ボタンを押すと現れる結果部分を囲むdivのデザイン*/
+.employeeslistcontainer {
+  max-height: 430pt;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+/*社員一覧画面-「検索」ボタンを押すと現れる結果部分の表のデザイン*/
+.employeeslist {
+  width: 90%;
+  height: 50%;
+  background-color: white;
+  white-space: nowrap;
+  margin: 0 auto;
+}
+
+/*社員一覧画面-表の最上段桁の色又は高さ設定*/
+.employeeslist tr:nth-of-type(1) th {
+  background-color: #ffff99;
+  height: 60px;
+}
+
+/*社員一覧画面-下段の三つのボタンを囲むdivのデザイン*/
+.employeesmanipulatebuttoncontainer {
+  display: flex;
+  padding-left: 55%;
+  padding-right: 10%;
+  justify-content: space-around;
+}
+
+/*社員一覧画面-下段の三つのボタンのデザイン*/
+.employeesmanipulatebuttoncontainer > button {
+  width: 21vh;
+  height: 5vh;
+  font-size: 25px;
+}
+
+/*社員情報編集画面-入力する部分の表のデザイン*/
+.employeesinfo {
+  width: 90%;
+  font-size: 23px;
+}
+
+.searchform {
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+}

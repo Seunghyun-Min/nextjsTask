@@ -2,11 +2,11 @@
 "use client";
 
 import { useState } from "react";
-import SearchForm from "@/app/ui/SearchForm";
-import EmployeesInfoTable from "@/app/ui/EmployeesInfoTable";
-import ManipulateButtons from "@/app/ui/ManipulateButtons";
-import LogoutButton from "@/app/ui/LogoutButton";
-import "../ui/employeesList.css";
+import SearchForm from "@/app/ui/employeesList/SearchForm";
+import EmployeesInfoTable from "@/app/ui/employeesList/EmployeesInfoTable";
+import ManipulateButtons from "@/app/ui/employeesList/ManipulateButtons";
+import LogoutButton from "@/app/ui/employeesList/LogoutButton";
+import "./employeesList.css";
 import { shainWithKeireki } from "@/app/lib/definitions";
 
 export default function EmployeesClientWrapper({

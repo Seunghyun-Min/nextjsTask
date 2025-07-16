@@ -1,3 +1,28 @@
+/* 画面全体の色 */
+body {
+  background-color: rgb(204, 255, 255);
+}
+
+/* 画面全体の上段のタイトル部分 */
+.header {
+  border-bottom: solid 2px;
+  display: flex;
+}
+
+/* 画面全体の上段のタイトル部分 */
+.header-title {
+  font-size: 5vh;
+  padding-top: 1%;
+  padding-left: 5%;
+  padding-bottom: 1%;
+  white-space: nowrap;
+}
+
+/* inputの高さの設定 */
+input {
+  height: 20pt;
+}
+
 /*ログイン画面-社員コードとパスポート入力部分*/
 .codeAndPassword {
   padding-left: 10%;
@@ -22,12 +47,11 @@
 /*社員一覧画面中段-入力する部分を囲むdivのデザイン*/
 .table-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 /*社員一覧画面-入力する部分の表のデザイン*/
 .employeessearch {
-  margin-left: auto;
   width: 90%;
   font-size: 26px;
 }
@@ -53,13 +77,12 @@
 
 /*社員一覧画面-「検索」ボタンを押すと現れる結果部分を囲むdivのデザイン*/
 .employeeslistcontainer {
-  max-height: 430pt;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  overflow-x: auto;
-  overflow-y: auto;
+  overflow-x: scroll;
+  overflow-y: scroll;
 }
 
 /*社員一覧画面-「検索」ボタンを押すと現れる結果部分の表のデザイン*/
@@ -68,7 +91,6 @@
   height: 50%;
   background-color: white;
   white-space: nowrap;
-  margin: 0 auto;
 }
 
 /*社員一覧画面-表の最上段桁の色又は高さ設定*/
@@ -95,11 +117,17 @@
 /*社員情報編集画面-入力する部分の表のデザイン*/
 .employeesinfo {
   width: 90%;
-  font-size: 23px;
+  font-size: 26px;
 }
 
-.searchform {
-  width: 100%;
-  max-width: 2000px;
-  margin: 0 auto;
+.experiencemanipulatebuttoncontainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.experiencemanipulatebuttoncontainer button {
+  width: 21vh;
+  margin-right: 5%;
+  height: 5vh;
+  font-size: 25px;
 }

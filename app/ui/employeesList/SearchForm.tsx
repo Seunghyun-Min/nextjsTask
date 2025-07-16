@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { SearchCriteria } from "../lib/definitions";
+import { SearchCriteria } from "../../lib/definitions";
 
 export default function SearchForm({
   onSearch,
