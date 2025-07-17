@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     const response = NextResponse.json({ success: true });
     response.cookies.set("shain_code", shain_code, {
       httpOnly: true,
-      maxAge: 60 * 60 * 0.5,
+      maxAge: 60 * 60 * 1,
       path: "/",
     });
 

@@ -75,3 +75,21 @@ export type SearchCriteria = {
   certificate?: string;
   language?: string;
 };
+
+export type EmployeeFormData = {
+  //必修項目
+  shain_code: string;
+  employeename: string;
+  address: string;
+  gender?: "0" | "1";
+  birthdate: string;
+  //任意項目
+  closeststationline?: string;
+  closeststationstation?: string;
+  careeryear?: string;
+  certificate?: string;
+  educationalbackground_graduationperiod1?: string;
+  educationalbackground1: string;
+  educationalbackground_graduationperiod2?: string;
+  educationalbackground2: string;
+};

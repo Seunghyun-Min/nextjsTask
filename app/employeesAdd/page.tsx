@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import LogoutButton from "@/app/ui/employeesList/LogoutButton";
 import EmployeesAddForm from "@/app/ui/employeesAdd/EmployeesAddForm";
-import EmployeesAddActions from "../ui/employeesAdd/EmployeesAddActions";
 
 export default async function EmployeesAddPage() {
   const cookieStore = await cookies();
@@ -22,7 +21,6 @@ export default async function EmployeesAddPage() {
       </div>
       {/* 上段入力エリア */}
       <EmployeesAddForm />
-      <EmployeesAddActions />
     </div>
   );
 }
