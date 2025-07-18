@@ -84,6 +84,11 @@ export async function addEmployee(
 
     console.log("社員コードは重複していません。INSERT を実行します。");
 
+    const removeSlash = (value?: string | null): string | null => {
+      if (!value) return null;
+      return value.replaceAll("/", "");
+    };
+
     await sql`
       INSERT INTO shain (
         shain_code,
@@ -112,9 +117,9 @@ export async function addEmployee(
         ${data.certificate ?? null},
         ${data.closeststationline ?? null},
         ${data.closeststationstation ?? null},
-        ${data.educationalbackground_graduationperiod1 ?? null},
+        ${removeSlash(data.educationalbackground_graduationperiod1)},
         ${data.educationalbackground1 ?? null},
-        ${data.educationalbackground_graduationperiod2 ?? null},
+        ${removeSlash(data.educationalbackground_graduationperiod2)},
         ${data.educationalbackground2 ?? null},
         ${today},
         ${updateShainCode}
