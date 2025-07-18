@@ -13,9 +13,9 @@ export async function POST(req: Request) {
     );
   }
 
-  const success = await executeLogin(shain_code, password);
+  const loginSuccess = await executeLogin(shain_code, password);
 
-  if (success) {
+  if (loginSuccess) {
     const response = NextResponse.json({ success: true });
     response.cookies.set("shain_code", shain_code, {
       httpOnly: true,

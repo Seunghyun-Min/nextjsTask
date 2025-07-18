@@ -81,7 +81,7 @@ export type EmployeeFormData = {
   shain_code: string;
   employeename: string;
   address: string;
-  gender?: "0" | "1";
+  gender: "0" | "1";
   birthdate: string;
   //任意項目
   closeststationline?: string;

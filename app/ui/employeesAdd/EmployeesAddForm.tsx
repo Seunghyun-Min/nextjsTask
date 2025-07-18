@@ -1,4 +1,4 @@
-// app/ui/employeesAdd/EmployeesAddForm.tsx
+// ✅ 修正済：EmployeesAddForm に fetch 移動 / props 削除
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -6,20 +6,15 @@ import "./employeesAdd.css";
 import React, { useState } from "react";
 import { EmployeeFormData } from "@/app/lib/definitions";
 
-export default function EmployeesAddForm({
-  addEmployee,
-}: {
-  addEmployee: (data: EmployeeFormData) => void;
-}) {
+export default function EmployeesAddForm() {
   const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState("");
 
-  //社員登録用input定義
   const [shain_code, setShain_code] = useState("");
   const [employeename, setEmployeename] = useState("");
   const [address, setAddress] = useState("");
   const [closeststationline, setCloseststationline] = useState("");
   const [closeststationstation, setCloseststationstation] = useState("");
-  // const [careeryear, setCareeryear] = useState("");
   const careeryear = "1";
   const [gender, setGender] = useState<"0" | "1" | "">("");
   const [certificate, setCertificate] = useState("");
@@ -35,111 +30,46 @@ export default function EmployeesAddForm({
   ] = useState("");
   const [educationalbackground2, setEducationalbackground2] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleBack = () => router.back();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const errors: string[] = [];
-
-    const isHalfWidth = (text: string) => /^[\x20-\x7E]*$/.test(text);
     const isHalfNumber = (text: string) => /^[0-9]*$/.test(text);
     const dateRegex = /^\d{4}\/\d{2}\/\d{2}$/;
     const yearMonthRegex = /^\d{4}\/\d{2}$/;
 
-    // 社員コード
-    if (shain_code === "") errors.push("社員コードを入力してください");
-    if (shain_code.length > 6) errors.push("半角6文字以内で入力して下さい");
-    if (shain_code.length > 0 && !isHalfNumber(shain_code)) {
-      errors.push("半角数字のみで入力して下さい");
-    }
-    // + 既に社員コードがあって重複になる場合の処理も必要！
+    if (!shain_code) errors.push("社員コードを入力してください");
+    if (shain_code.length > 6 || !isHalfNumber(shain_code))
+      errors.push("社員コードは半角数字6文字以内で入力してください");
 
-    //社員名称
-    if (employeename === "") errors.push("社員名称を入力してください");
+    if (!employeename) errors.push("社員名称を入力してください");
     if (employeename.length > 20)
-      errors.push("社員名称：　20文字以内で入力して下さい");
+      errors.push("社員名称は20文字以内で入力してください");
 
-    //住所
-    if (address === "") errors.push("住所を入力してください。");
-    if (address.length > 50) errors.push("住所：　50文字以内で入力して下さい");
+    if (!address) errors.push("住所を入力してください");
+    if (address.length > 50) errors.push("住所は50文字以内で入力してください");
 
-    // 最寄駅
-    if (closeststationline.length > 20)
-      errors.push("最寄駅－線：　20文字以内で入力して下さい");
-    if (closeststationstation.length > 20)
-      errors.push("最寄駅：　20文字以内で入力して下さい");
+    if (!gender) errors.push("性別を選択してください");
 
-    // 性別
-    if (gender === "") errors.push("性別を入力してください");
-
-    // 資格
-    if (certificate.length > 50)
-      errors.push("資格：　50文字以内で入力して下さい");
-
-    // 生年月日
-    if (birthdate === "") errors.push("生年月日を入力してください");
-    if (birthdate.length > 10)
-      errors.push("生年月日：　半角10文字以内で入力して下さい");
-    if (birthdate && !dateRegex.test(birthdate)) {
-      errors.push("生年月日：　YYYY/MM/DDのフォーマットで入力して下さい");
-    } else if (birthdate) {
-      const [year, month, day] = birthdate.split("/").map(Number);
-      const date = new Date(year, month - 1, day);
-      if (
-        date.getFullYear() !== year ||
-        date.getMonth() !== month - 1 ||
-        date.getDate() !== day
-      ) {
-        errors.push(
-          "生年月日が日付として正しくありません。正しい日付を入力してください"
-        );
-      }
+    if (!birthdate || !dateRegex.test(birthdate)) {
+      errors.push("生年月日は YYYY/MM/DD 形式で入力してください");
     }
 
-    // 学歴1
-    if (educationalbackground_graduationperiod1.length > 7)
-      errors.push("学歴１：　半角7文字以内で入力して下さい");
-
-    if (educationalbackground_graduationperiod1) {
-      if (!yearMonthRegex.test(educationalbackground_graduationperiod1)) {
-        errors.push("学歴１：　YYYY/MMのフォーマットで入力して下さい");
-      } else {
-        const [y1, m1] = educationalbackground_graduationperiod1
-          .split("/")
-          .map(Number);
-        const d1 = new Date(y1, m1 - 1);
-        if (d1.getFullYear() !== y1 || d1.getMonth() !== m1 - 1) {
-          errors.push(
-            "学歴１年月が日付として正しくありません。正しい日付を入力してください"
-          );
-        }
-      }
+    if (
+      educationalbackground_graduationperiod1 &&
+      !yearMonthRegex.test(educationalbackground_graduationperiod1)
+    ) {
+      errors.push("学歴1 卒業年月は YYYY/MM 形式で入力してください");
     }
 
-    if (educationalbackground1.length > 20)
-      errors.push("学歴１：　20文字以内で入力して下さい");
-
-    // 学歴2
-    if (educationalbackground_graduationperiod2.length > 7)
-      errors.push("学歴２：　半角7文字以内で入力して下さい");
-
-    if (educationalbackground_graduationperiod2) {
-      if (!yearMonthRegex.test(educationalbackground_graduationperiod2)) {
-        errors.push("学歴２：　YYYY/MMのフォーマットで入力して下さい");
-      } else {
-        const [y2, m2] = educationalbackground_graduationperiod2
-          .split("/")
-          .map(Number);
-        const d2 = new Date(y2, m2 - 1);
-        if (d2.getFullYear() !== y2 || d2.getMonth() !== m2 - 1) {
-          errors.push(
-            "学歴２年月が日付として正しくありません。正しい日付を入力してください。"
-          );
-        }
-      }
+    if (
+      educationalbackground_graduationperiod2 &&
+      !yearMonthRegex.test(educationalbackground_graduationperiod2)
+    ) {
+      errors.push("学歴2 卒業年月は YYYY/MM 形式で入力してください");
     }
-
-    if (educationalbackground2.length > 20)
-      errors.push("学歴2：　20文字以内で入力して下さい");
 
     if (errors.length > 0) {
       alert(errors.join("\n"));
@@ -150,7 +80,7 @@ export default function EmployeesAddForm({
       shain_code,
       employeename,
       address,
-      gender: gender !== "" ? gender : undefined,
+      gender: gender as "0" | "1",
       birthdate,
       closeststationline,
       closeststationstation,
@@ -162,11 +92,29 @@ export default function EmployeesAddForm({
       educationalbackground2,
     };
 
-    addEmployee(data);
-  };
+    try {
+      const res = await fetch("/api/employeesAdd", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-  const handleBack = () => {
-    router.push("/employeesList");
+      const result = await res.json();
+
+      if (result.success) {
+        router.push("/employeesList");
+      } else {
+        if (result.error === "入力された社員コードはすでに登録済みです") {
+          setErrorMessage(result.error);
+          return; // 処理終了、遷移しない
+        } else {
+          alert("登録に失敗しました。");
+        }
+      }
+    } catch (error) {
+      alert("ネットワークエラーが発生しました。");
+      console.error(error);
+    }
   };
 
   return (
@@ -353,6 +301,8 @@ export default function EmployeesAddForm({
           </tbody>
         </table>
       </div>
+
+      {errorMessage && <p className="text-red-600 font-bold">{errorMessage}</p>}
 
       <div className="experiencemanipulatebuttoncontainer">
         <button
