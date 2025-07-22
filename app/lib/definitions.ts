@@ -81,15 +81,15 @@ export type EmployeeFormData = {
   shain_code: string;
   employeename: string;
   address: string;
-  gender: "0" | "1";
+  gender: "0" | "1" | "";
   birthdate: string;
   //任意項目
-  closeststationline?: string;
-  closeststationstation?: string;
-  careeryear?: string;
-  certificate?: string;
-  educationalbackground_graduationperiod1?: string;
-  educationalbackground1: string;
-  educationalbackground_graduationperiod2?: string;
-  educationalbackground2: string;
+  closeststationline?: string | null;
+  closeststationstation?: string | null;
+  careeryear?: string | null;
+  certificate?: string | null;
+  educationalbackground_graduationperiod1?: string | null;
+  educationalbackground1: string | null;
+  educationalbackground_graduationperiod2?: string | null;
+  educationalbackground2: string | null;
 };

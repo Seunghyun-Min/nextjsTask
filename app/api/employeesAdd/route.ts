@@ -4,7 +4,13 @@ import { addEmployee } from "@/app/lib/data";
 
 export async function POST(req: Request) {
   const data = await req.json();
-  const success = await addEmployee(data);
-  const result = await addEmployee(data);
-  return NextResponse.json({ success });
+  const result = await addEmployee(data); // ✅ 1回だけ実行
+
+  if (!result.success) {
+    // 重複などのエラー時にはエラー情報を含めたレスポンス
+    return NextResponse.json({ error: "duplicate" }, { status: 409 });
+  }
+
+  // 成功時
+  return NextResponse.json({ success: true }, { status: 200 });
 }

@@ -10,25 +10,50 @@ export default function EmployeesAddForm() {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [shain_code, setShain_code] = useState("");
-  const [employeename, setEmployeename] = useState("");
-  const [address, setAddress] = useState("");
-  const [closeststationline, setCloseststationline] = useState("");
-  const [closeststationstation, setCloseststationstation] = useState("");
-  const careeryear = "1";
-  const [gender, setGender] = useState<"0" | "1" | "">("");
-  const [certificate, setCertificate] = useState("");
-  const [birthdate, setBirthdate] = useState("");
-  const [
-    educationalbackground_graduationperiod1,
-    setEducationalbackground_graduationperiod1,
-  ] = useState("");
-  const [educationalbackground1, setEducationalbackground1] = useState("");
-  const [
-    educationalbackground_graduationperiod2,
-    setEducationalbackground_graduationperiod2,
-  ] = useState("");
-  const [educationalbackground2, setEducationalbackground2] = useState("");
+  // const [shain_code, setShain_code] = useState("");
+  // const [employeename, setEmployeename] = useState("");
+  // const [address, setAddress] = useState("");
+  // const [closeststationline, setCloseststationline] = useState("");
+  // const [closeststationstation, setCloseststationstation] = useState("");
+  // const careeryear = "1";
+  // const [gender, setGender] = useState<"0" | "1" | "">("");
+  // const [certificate, setCertificate] = useState("");
+  // const [birthdate, setBirthdate] = useState("");
+  // const [
+  //   educationalbackground_graduationperiod1,
+  //   setEducationalbackground_graduationperiod1,
+  // ] = useState("");
+  // const [educationalbackground1, setEducationalbackground1] = useState("");
+  // const [
+  //   educationalbackground_graduationperiod2,
+  //   setEducationalbackground_graduationperiod2,
+  // ] = useState("");
+  // const [educationalbackground2, setEducationalbackground2] = useState("");
+  const [formData, setFormData] = useState<EmployeeFormData>({
+    shain_code: "",
+    employeename: "",
+    address: "",
+    birthdate: "",
+    careeryear: "1", // 固定値
+    gender: "",
+    certificate: null,
+    closeststationline: null,
+    closeststationstation: null,
+    educationalbackground_graduationperiod1: null,
+    educationalbackground1: null,
+    educationalbackground_graduationperiod2: null,
+    educationalbackground2: null,
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleBack = () => router.back();
 
@@ -39,6 +64,16 @@ export default function EmployeesAddForm() {
     const isHalfNumber = (text: string) => /^[0-9]*$/.test(text);
     const dateRegex = /^\d{4}\/\d{2}\/\d{2}$/;
     const yearMonthRegex = /^\d{4}\/\d{2}$/;
+
+    const {
+      shain_code,
+      employeename,
+      address,
+      gender,
+      birthdate,
+      educationalbackground_graduationperiod1,
+      educationalbackground_graduationperiod2,
+    } = formData;
 
     if (!shain_code) errors.push("社員コードを入力してください");
     if (shain_code.length > 6 || !isHalfNumber(shain_code))
@@ -76,44 +111,64 @@ export default function EmployeesAddForm() {
       return;
     }
 
-    const data: EmployeeFormData = {
-      shain_code,
-      employeename,
-      address,
-      gender: gender as "0" | "1",
-      birthdate,
-      closeststationline,
-      closeststationstation,
-      careeryear,
-      certificate,
-      educationalbackground_graduationperiod1,
-      educationalbackground1,
-      educationalbackground_graduationperiod2,
-      educationalbackground2,
-    };
+    // const data: EmployeeFormData = {
+    //   shain_code,
+    //   employeename,
+    //   address,
+    //   gender: gender as "0" | "1",
+    //   birthdate,
+    //   closeststationline,
+    //   closeststationstation,
+    //   careeryear,
+    //   certificate,
+    //   educationalbackground_graduationperiod1,
+    //   educationalbackground1,
+    //   educationalbackground_graduationperiod2,
+    //   educationalbackground2,
+    // };
+
+    //   try {
+    //     const res = await fetch("/api/employeesAdd", {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify(formData),
+    //     });
+
+    //     const result = await res.json();
+
+    //     if (result.success) {
+    //       router.push("/employeesList");
+    //     } else {
+    //       if (result.error === "入力された社員コードはすでに登録済みです") {
+    //         setErrorMessage(result.error);
+    //       } else {
+    //         alert("登録に失敗しました。");
+    //       }
+    //     }
+    //   } catch (error) {
+    //     alert("ネットワークエラーが発生しました。");
+    //     console.error(error);
+    //   }
+    // };
 
     try {
-      const res = await fetch("/api/employeesAdd", {
+      const response = await fetch("/api/employeesAdd", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(formData),
       });
 
-      const result = await res.json();
-
-      if (result.success) {
-        router.push("/employeesList");
-      } else {
-        if (result.error === "入力された社員コードはすでに登録済みです") {
-          setErrorMessage(result.error);
-          return; // 処理終了、遷移しない
+      if (!response.ok) {
+        const result = await response.json();
+        if (result.error === "duplicate") {
+          alert("社員コードがすでに存在しています");
         } else {
-          alert("登録に失敗しました。");
+          alert("登録中にエラーが発生しました");
         }
+      } else {
+        router.push("/employeesList");
       }
     } catch (error) {
-      alert("ネットワークエラーが発生しました。");
-      console.error(error);
+      alert("ネットワークエラーが発生しました");
     }
   };
 
@@ -130,8 +185,8 @@ export default function EmployeesAddForm() {
                   id="shain_code"
                   type="text"
                   size={23}
-                  value={shain_code}
-                  onChange={(e) => setShain_code(e.target.value)}
+                  value={formData.shain_code}
+                  onChange={handleChange}
                 />
               </td>
               <td>資格：</td>
@@ -141,8 +196,8 @@ export default function EmployeesAddForm() {
                   id="certificate"
                   type="text"
                   size={55}
-                  value={certificate}
-                  onChange={(e) => setCertificate(e.target.value)}
+                  value={formData.certificate ?? ""}
+                  onChange={handleChange}
                 />
               </td>
             </tr>
@@ -154,8 +209,8 @@ export default function EmployeesAddForm() {
                   id="employeename"
                   type="text"
                   size={55}
-                  value={employeename}
-                  onChange={(e) => setEmployeename(e.target.value)}
+                  value={formData.employeename}
+                  onChange={handleChange}
                 />
               </td>
               <td>生年月日：</td>
@@ -165,8 +220,8 @@ export default function EmployeesAddForm() {
                   id="birthdate"
                   type="text"
                   size={15}
-                  value={birthdate}
-                  onChange={(e) => setBirthdate(e.target.value)}
+                  value={formData.birthdate}
+                  onChange={handleChange}
                 />
                 (YYYY/MM/DD)
               </td>
@@ -179,8 +234,8 @@ export default function EmployeesAddForm() {
                   id="address"
                   type="text"
                   size={55}
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  value={formData.address}
+                  onChange={handleChange}
                 />
               </td>
               <td>学歴１：</td>
@@ -190,10 +245,8 @@ export default function EmployeesAddForm() {
                   id="educationalbackground_graduationperiod1"
                   type="text"
                   size={15}
-                  value={educationalbackground_graduationperiod1}
-                  onChange={(e) =>
-                    setEducationalbackground_graduationperiod1(e.target.value)
-                  }
+                  value={formData.educationalbackground_graduationperiod1 ?? ""}
+                  onChange={handleChange}
                 />
                 (YYYY/MM)卒業
               </td>
@@ -206,8 +259,8 @@ export default function EmployeesAddForm() {
                   id="closeststationline"
                   type="text"
                   size={16}
-                  value={closeststationline}
-                  onChange={(e) => setCloseststationline(e.target.value)}
+                  value={formData.closeststationline ?? ""}
+                  onChange={handleChange}
                 />{" "}
                 線
                 <input
@@ -215,8 +268,8 @@ export default function EmployeesAddForm() {
                   id="closeststationstation"
                   type="text"
                   size={16}
-                  value={closeststationstation}
-                  onChange={(e) => setCloseststationstation(e.target.value)}
+                  value={formData.closeststationstation ?? ""}
+                  onChange={handleChange}
                 />{" "}
                 駅
               </td>
@@ -227,8 +280,8 @@ export default function EmployeesAddForm() {
                   id="educationalbackground1"
                   type="text"
                   size={55}
-                  value={educationalbackground1}
-                  onChange={(e) => setEducationalbackground1(e.target.value)}
+                  value={formData.educationalbackground1 ?? ""}
+                  onChange={handleChange}
                 />
               </td>
             </tr>
@@ -252,8 +305,8 @@ export default function EmployeesAddForm() {
                     type="radio"
                     value="0"
                     name="gender"
-                    checked={gender === "0"}
-                    onChange={(e) => setGender(e.target.value as "0" | "1")}
+                    checked={formData.gender === "0"}
+                    onChange={handleChange}
                   />
                   男
                 </label>
@@ -262,8 +315,8 @@ export default function EmployeesAddForm() {
                     type="radio"
                     value="1"
                     name="gender"
-                    checked={gender === "1"}
-                    onChange={(e) => setGender(e.target.value as "0" | "1")}
+                    checked={formData.gender === "1"}
+                    onChange={handleChange}
                   />
                   女
                 </label>
@@ -275,10 +328,8 @@ export default function EmployeesAddForm() {
                   id="educationalbackground_graduationperiod2 "
                   type="text"
                   size={15}
-                  value={educationalbackground_graduationperiod2}
-                  onChange={(e) =>
-                    setEducationalbackground_graduationperiod2(e.target.value)
-                  }
+                  value={formData.educationalbackground_graduationperiod2 ?? ""}
+                  onChange={handleChange}
                 />
                 (YYYY/MM)卒業
               </td>
@@ -293,16 +344,14 @@ export default function EmployeesAddForm() {
                   id="educationalbackground2"
                   type="text"
                   size={55}
-                  value={educationalbackground2}
-                  onChange={(e) => setEducationalbackground2(e.target.value)}
+                  value={formData.educationalbackground2 ?? ""}
+                  onChange={handleChange}
                 />
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-
-      {errorMessage && <p className="text-red-600 font-bold">{errorMessage}</p>}
 
       <div className="experiencemanipulatebuttoncontainer">
         <button
