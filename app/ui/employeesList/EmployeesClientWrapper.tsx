@@ -39,7 +39,7 @@ export default function EmployeesClientWrapper({
         criteria.closeststationline &&
         !(emp.moyorieki_sen ?? "")
           .toLowerCase()
-          .includes(criteria.closeststationline)
+          .includes(criteria.closeststationline.toLowerCase())
       )
         return false;
       //最寄駅（駅）
@@ -48,13 +48,19 @@ export default function EmployeesClientWrapper({
         !(emp.moyorieki_eki ?? "").includes(criteria.closeststationstation)
       )
         return false;
-      //最寄駅（駅）
+      //機種
       if (
         criteria.kishu &&
         !(
-          emp.kishu1?.includes(criteria.kishu) ||
-          emp.kishu2?.includes(criteria.kishu) ||
-          emp.kishu3?.includes(criteria.kishu)
+          (emp.kishu1 ?? "")
+            .toLowerCase()
+            .includes(criteria.kishu.toLowerCase()) ||
+          (emp.kishu2 ?? "")
+            .toLowerCase()
+            .includes(criteria.kishu.toLowerCase()) ||
+          (emp.kishu3 ?? "")
+            .toLowerCase()
+            .includes(criteria.kishu.toLowerCase())
         )
       )
         return false;
@@ -62,25 +68,37 @@ export default function EmployeesClientWrapper({
       if (
         criteria.os &&
         !(
-          emp.os_db1?.includes(criteria.os) ||
-          emp.os_db2?.includes(criteria.os) ||
-          emp.os_db3?.includes(criteria.os)
+          (emp.os_db1 ?? "")
+            .toLowerCase()
+            .includes(criteria.os.toLowerCase()) ||
+          (emp.os_db2 ?? "")
+            .toLowerCase()
+            .includes(criteria.os.toLowerCase()) ||
+          (emp.os_db3 ?? "").toLowerCase().includes(criteria.os.toLowerCase())
         )
       )
         return false;
       //資格
       if (
         criteria.certificate &&
-        !(emp.shikaku ?? "").toLowerCase().includes(criteria.certificate)
+        !(emp.shikaku ?? "")
+          .toLowerCase()
+          .includes(criteria.certificate.toLowerCase())
       )
         return false;
       //言語
       if (
         criteria.language &&
         !(
-          emp.gengo1?.includes(criteria.language) ||
-          emp.gengo2?.includes(criteria.language) ||
-          emp.gengo3?.includes(criteria.language)
+          (emp.gengo1 ?? "")
+            .toLowerCase()
+            .includes(criteria.language.toLowerCase()) ||
+          (emp.gengo2 ?? "")
+            .toLowerCase()
+            .includes(criteria.language.toLowerCase()) ||
+          (emp.gengo3 ?? "")
+            .toLowerCase()
+            .includes(criteria.language.toLowerCase())
         )
       )
         return false;
