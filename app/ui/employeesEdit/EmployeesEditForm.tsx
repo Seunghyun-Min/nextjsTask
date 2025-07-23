@@ -1,28 +1,31 @@
-//app/ui/employeesAdd/EmployeesAddForm.tsx
+//app/ui/employeesEdit/EmployeesEditForm.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
-import "./employeesAdd.css";
-import React, { useState } from "react";
-import { EmployeeFormData } from "@/app/lib/definitions";
+import "./employeesEdit.css";
+import { useState } from "react";
+import { shainWithKeireki } from "@/app/lib/definitions";
 
-export default function EmployeesAddForm() {
+type Props = {
+  initialData: shainWithKeireki;
+};
+
+export default function EmployeesEditForm({ initialData }: Props) {
   const router = useRouter();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [formData, setFormData] = useState<EmployeeFormData>({
-    shain_code: "",
-    employeename: "",
-    address: "",
-    birthdate: "",
-    careeryear: "1", // 固定値
-    gender: "",
-    certificate: null,
-    closeststationline: null,
-    closeststationstation: null,
-    educationalbackground_graduationperiod1: null,
-    educationalbackground1: null,
-    educationalbackground_graduationperiod2: null,
-    educationalbackground2: null,
+  const [formData, setFormData] = useState({
+    shain_code: initialData.shain_code,
+    employeename: initialData.shain_shimei,
+    address: initialData.jyusho,
+    birthdate: formatDate(initialData.seinen_gappi ?? ""), // YYYY/MM/DD
+    careeryear: initialData.keiken_nensu,
+    gender: initialData.seibetsu,
+    certificate: initialData.shikaku ?? "",
+    closeststationline: initialData.moyorieki_sen ?? "",
+    closeststationstation: initialData.moyorieki_eki ?? "",
+    educationalbackground_graduationperiod1: initialData.gakureki_nen1 ?? "",
+    educationalbackground1: initialData.gakureki1 ?? "",
+    educationalbackground_graduationperiod2: initialData.gakureki_nen2 ?? "",
+    educationalbackground2: initialData.gakureki2 ?? "",
   });
 
   const handleChange = (
@@ -92,18 +95,13 @@ export default function EmployeesAddForm() {
     }
 
     try {
-      const response = await fetch("/api/employeesAdd", {
+      const response = await fetch("/api/employeesEdit", {
         method: "POST",
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        const result = await response.json();
-        if (result.error === "duplicate") {
-          alert("社員コードがすでに存在しています");
-        } else {
-          alert("登録中にエラーが発生しました");
-        }
+        alert("更新中にエラーが発生しました");
       } else {
         router.push("/employeesList");
       }
@@ -122,21 +120,19 @@ export default function EmployeesAddForm() {
               <td>
                 <input
                   name="shain_code"
-                  id="shain_code"
                   type="text"
                   size={23}
                   value={formData.shain_code}
-                  onChange={handleChange}
+                  readOnly
                 />
               </td>
               <td>資格：</td>
               <td>
                 <input
                   name="certificate"
-                  id="certificate"
                   type="text"
                   size={55}
-                  value={formData.certificate ?? ""}
+                  value={formData.certificate}
                   onChange={handleChange}
                 />
               </td>
@@ -146,7 +142,6 @@ export default function EmployeesAddForm() {
               <td>
                 <input
                   name="employeename"
-                  id="employeename"
                   type="text"
                   size={55}
                   value={formData.employeename}
@@ -157,7 +152,6 @@ export default function EmployeesAddForm() {
               <td>
                 <input
                   name="birthdate"
-                  id="birthdate"
                   type="text"
                   size={15}
                   value={formData.birthdate}
@@ -171,7 +165,6 @@ export default function EmployeesAddForm() {
               <td>
                 <input
                   name="address"
-                  id="address"
                   type="text"
                   size={55}
                   value={formData.address}
@@ -182,10 +175,9 @@ export default function EmployeesAddForm() {
               <td>
                 <input
                   name="educationalbackground_graduationperiod1"
-                  id="educationalbackground_graduationperiod1"
                   type="text"
                   size={15}
-                  value={formData.educationalbackground_graduationperiod1 ?? ""}
+                  value={formData.educationalbackground_graduationperiod1}
                   onChange={handleChange}
                 />
                 (YYYY/MM)卒業
@@ -196,46 +188,41 @@ export default function EmployeesAddForm() {
               <td>
                 <input
                   name="closeststationline"
-                  id="closeststationline"
                   type="text"
                   size={16}
-                  value={formData.closeststationline ?? ""}
+                  value={formData.closeststationline}
                   onChange={handleChange}
-                />{" "}
+                />
                 線
                 <input
                   name="closeststationstation"
-                  id="closeststationstation"
                   type="text"
                   size={16}
-                  value={formData.closeststationstation ?? ""}
+                  value={formData.closeststationstation}
                   onChange={handleChange}
-                />{" "}
+                />
                 駅
               </td>
               <td></td>
               <td>
                 <input
                   name="educationalbackground1"
-                  id="educationalbackground1"
                   type="text"
                   size={55}
-                  value={formData.educationalbackground1 ?? ""}
+                  value={formData.educationalbackground1}
                   onChange={handleChange}
                 />
               </td>
             </tr>
             <tr>
-              {/* 社員追加の場合は経験年数は１年 */}
               <td>経験年数：</td>
               <td>
                 <input
                   name="careeryear"
-                  id="careeryear"
                   type="text"
-                  value="1"
-                  readOnly
+                  value={formData.careeryear}
                   size={5}
+                  onChange={handleChange}
                 />
                 年
                 <input type="text" size={5} style={{ visibility: "hidden" }} />
@@ -243,8 +230,8 @@ export default function EmployeesAddForm() {
                 <label>
                   <input
                     type="radio"
-                    value="0"
                     name="gender"
+                    value="0"
                     checked={formData.gender === "0"}
                     onChange={handleChange}
                   />
@@ -253,8 +240,8 @@ export default function EmployeesAddForm() {
                 <label>
                   <input
                     type="radio"
-                    value="1"
                     name="gender"
+                    value="1"
                     checked={formData.gender === "1"}
                     onChange={handleChange}
                   />
@@ -265,10 +252,9 @@ export default function EmployeesAddForm() {
               <td>
                 <input
                   name="educationalbackground_graduationperiod2"
-                  id="educationalbackground_graduationperiod2 "
                   type="text"
                   size={15}
-                  value={formData.educationalbackground_graduationperiod2 ?? ""}
+                  value={formData.educationalbackground_graduationperiod2}
                   onChange={handleChange}
                 />
                 (YYYY/MM)卒業
@@ -281,10 +267,9 @@ export default function EmployeesAddForm() {
               <td>
                 <input
                   name="educationalbackground2"
-                  id="educationalbackground2"
                   type="text"
                   size={55}
-                  value={formData.educationalbackground2 ?? ""}
+                  value={formData.educationalbackground2}
                   onChange={handleChange}
                 />
               </td>
@@ -294,17 +279,12 @@ export default function EmployeesAddForm() {
       </div>
 
       <div className="experiencemanipulatebuttoncontainer">
-        <button
-          type="submit"
-          className="experienceregistratebutton"
-          id="registratebutton"
-        >
-          登録
+        <button type="submit" className="experienceregistratebutton">
+          更新
         </button>
         <button
           type="button"
           className="experiencegobackbutton"
-          id="gobackbutton"
           onClick={handleBack}
         >
           戻る
@@ -312,4 +292,12 @@ export default function EmployeesAddForm() {
       </div>
     </form>
   );
+}
+
+// 生年月日フォーマット YYYY-MM-DD → YYYY/MM/DD
+function formatDate(date: Date | string | null | undefined): string {
+  if (!date) return "";
+  if (typeof date === "string") return date; // すでにstringならそのまま
+  if (date instanceof Date) return date.toISOString().split("T")[0]; // YYYY-MM-DD 形式
+  return "";
 }

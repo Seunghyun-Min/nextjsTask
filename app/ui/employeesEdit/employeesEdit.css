@@ -1,0 +1,126 @@
+/* 画面全体の色 */
+body {
+  background-color: rgb(204, 255, 255);
+}
+
+/* 画面全体の上段のタイトル部分 */
+.header {
+  border-bottom: solid 2px;
+  display: flex;
+}
+
+/* 画面全体の上段のタイトル部分 */
+.header-title {
+  font-size: 5vh;
+  padding-top: 1%;
+  padding-left: 5%;
+  padding-bottom: 1%;
+  white-space: nowrap;
+}
+
+/* inputの高さの設定 */
+input {
+  height: 20pt;
+}
+
+/*社員情報編集画面上段-ログインアウトボタン*/
+.logoutbuttoncontainer {
+  padding-top: 1.7%;
+  width: 25vh;
+  padding-left: 70%;
+}
+
+/*社員情報編集画面上段-ログインアウトボタン*/
+.logoutbutton {
+  width: 20vh;
+  height: 5vh;
+  font-size: 25px;
+}
+
+/*社員情報編集画面中段-入力する部分を囲むdivのデザイン*/
+.table-container {
+  display: flex;
+  justify-content: center;
+}
+
+/*社員一覧画面-入力する部分の表のデザイン*/
+.employeessearch {
+  width: 90%;
+  font-size: 26px;
+}
+
+/*社員情報編集画面-入力する部分の表のデザイン*/
+.employeesinfo {
+  width: 90%;
+  font-size: 26px;
+}
+
+/*社員情報編集画面-業務経歴一覧の表を囲むdivのデザイン*/
+.experiencelistcontainer {
+  max-height: 530px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+/*社員情報編集画面-業務経歴一覧の表のデザイン*/
+.experiencelist {
+  max-width: 2000px;
+  width: 90%;
+  height: 50%;
+  background-color: white;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/*社員情報編集画面-業務経歴一覧の表の桁の高さ*/
+.experiencelist tr {
+  height: 30px;
+}
+
+/*社員情報編集画面-表の上段桁の色と高さ*/
+.experiencelist tr:nth-of-type(1) th {
+  background-color: #ffff99;
+  height: 60px;
+}
+.experiencelist tr:nth-of-type(2) {
+  background-color: #ffff99;
+}
+
+/*社員情報編集画面-下段の三つのボタンを囲むdivのデザイン*/
+.experiencemanipulatebuttoncontainer {
+  display: flex;
+  padding-left: 5%;
+  justify-content: space-between;
+}
+
+/*社員情報編集画面-下段の三つのボタンのデザイン*/
+.experiencemanipulatebuttoncontainer > button {
+  width: 21vh;
+  height: 5vh;
+  font-size: 25px;
+}
+.experienceregistratebutton {
+  margin-left: 55%;
+}
+.experiencegobackbutton {
+  margin-right: 5%;
+}
+
+/*社員情報編集画面-「登録」ボタンを押すと表示されるダイアログのデザイン*/
+.registratedialog {
+  position: absolute;
+  top: 40%;
+  width: 15%;
+  height: 12%;
+  text-align: center;
+}
+
+/*社員情報編集画面-「登録」ボタンを押すと表示されるダイアログのボタンのデザイン*/
+.registratedialog > button {
+  text-align: center;
+  font-size: 17pt;
+}
