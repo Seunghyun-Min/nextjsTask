@@ -1,7 +1,12 @@
 //lib/data.ts
 import postgres from "postgres";
-import { eigyo, shain } from "./definitions";
-import type { shainWithKeireki, EmployeeFormData } from "./definitions";
+import type {
+  eigyo,
+  shain,
+  keireki,
+  shainWithKeireki,
+  EmployeeFormData,
+} from "./definitions";
 import { cookies } from "next/headers";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
@@ -32,10 +37,6 @@ export async function fetchAllShain(): Promise<shainWithKeireki[]> {
         s.moyorieki_sen,
         s.moyorieki_eki,
         s.shikaku,
-        s.gakureki_nen1,
-        s.gakureki1,
-        s.gakureki_nen2,
-        s.gakureki2,
         k.kishu1,
         k.kishu2,
         k.kishu3,
@@ -136,5 +137,57 @@ export async function addEmployee(
   } catch (error) {
     console.error("社員登録エラー:", error);
     return { success: false, error: "登録に失敗しました。" };
+  }
+}
+
+export async function getShainByCode(
+  shain_code: string
+): Promise<shainWithKeireki[] | null> {
+  try {
+    const result = await sql<shainWithKeireki[]>`
+      SELECT 
+        s.shain_code,
+        s.shain_shimei,
+        s.jyusho,
+        s.seinen_gappi,
+        s.keiken_nensu,
+        s.seibetsu,
+        s.shikaku,
+        s.moyorieki_sen,
+        s.moyorieki_eki,
+        s.gakureki_nen1,
+        s.gakureki1,
+        s.gakureki_nen2,
+        s.gakureki2,
+        s.update_date,
+        s.update_shain_code,
+
+        k.keireki_id,
+        k.kikan_kaishi,
+        k.kikanshuryo,
+        k.shokushu,
+        k.gyoumu_naiyo,
+        k.kishu1,
+        k.kishu2,
+        k.kishu3,
+        k.os_db1,
+        k.os_db2,
+        k.os_db3,
+        k.gengo1,
+        k.gengo2,
+        k.gengo3,
+        k.update_date as keireki_update_date,
+        k.update_shain_code as keireki_update_shain_code
+
+      FROM shain s
+      LEFT JOIN keireki k ON s.shain_code = k.shain_code
+      WHERE s.shain_code = ${shain_code}
+      ORDER BY k.kikan_kaishi DESC
+    `;
+
+    return result.length > 0 ? result : null;
+  } catch (error) {
+    console.error("getShainByCode error:", error);
+    return null;
   }
 }

@@ -1,12 +1,16 @@
 // app/ui/EmployeesInfoTable.tsx
 import { shain } from "@/app/lib/definitions";
-//import { shainWithKeireki } from "@/app/lib/definitions";
+import { useShainStore } from "@/app/store/shainStore";
 
 export default function EmployeesInfoTable({
   employees,
 }: {
   employees: shain[];
 }) {
+  const setSelectedShainCode = useShainStore(
+    (state) => state.setSelectedShainCode
+  );
+
   return (
     <table className="employeeslist" border={1}>
       <thead>
@@ -27,7 +31,12 @@ export default function EmployeesInfoTable({
         {employees.map((emp) => (
           <tr key={emp.shain_code}>
             <td>
-              <input type="radio" name="employee" value={emp.shain_code} />
+              <input
+                type="radio"
+                name="employee"
+                value={emp.shain_code}
+                onChange={() => setSelectedShainCode(emp.shain_code)}
+              />
             </td>
             <td>{emp.shain_shimei}</td>
             <td>{formatDate(emp.seinen_gappi)}</td>
@@ -38,18 +47,12 @@ export default function EmployeesInfoTable({
             <td>{emp.moyorieki_sen ?? ""}</td>
             <td>{emp.moyorieki_eki ?? ""}</td>
             <td>{emp.shikaku ?? ""}</td>
-            {/* <td>{emp.kishu1}</td> */}
           </tr>
         ))}
       </tbody>
     </table>
   );
 }
-
-// function formatDate(dateString: string) {
-//   const d = new Date(dateString);
-//   return d.toLocaleDateString(); // YYYY/MM/DD形式などに整形
-// }
 
 function formatDate(dateString: string) {
   const d = new Date(dateString);
