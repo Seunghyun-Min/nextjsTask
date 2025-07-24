@@ -5,9 +5,13 @@ import { useRouter } from "next/navigation";
 import "./employeesEdit.css";
 import { useState } from "react";
 import { shainWithKeireki } from "@/app/lib/definitions";
+import { useEditFormStore } from "@/app/store/editFormStore";
+import type { EmployeeFormData } from "@/app/lib/definitions";
 
 type Props = {
-  initialData: shainWithKeireki;
+  initialData: Omit<shainWithKeireki, "keireki"> & {
+    keireki: any[];
+  };
 };
 
 export default function EmployeesEditForm({ initialData }: Props) {
@@ -16,15 +20,19 @@ export default function EmployeesEditForm({ initialData }: Props) {
     shain_code: initialData.shain_code,
     employeename: initialData.shain_shimei,
     address: initialData.jyusho,
-    birthdate: formatDate(initialData.seinen_gappi), // YYYY/MM/DD
+    birthdate: formatDate(initialData.seinen_gappi),
     careeryear: initialData.keiken_nensu,
     gender: initialData.seibetsu,
     certificate: initialData.shikaku ?? "",
     closeststationline: initialData.moyorieki_sen ?? "",
     closeststationstation: initialData.moyorieki_eki ?? "",
-    educationalbackground_graduationperiod1: initialData.gakureki_nen1 ?? "",
+    educationalbackground_graduationperiod1: formatYearMonth(
+      initialData.gakureki_nen1 ?? ""
+    ),
     educationalbackground1: initialData.gakureki1 ?? "",
-    educationalbackground_graduationperiod2: initialData.gakureki_nen2 ?? "",
+    educationalbackground_graduationperiod2: formatYearMonth(
+      initialData.gakureki_nen2 ?? ""
+    ),
     educationalbackground2: initialData.gakureki2 ?? "",
   });
 
@@ -304,3 +312,12 @@ function formatDate(date: Date | string | null | undefined): string {
   }
   return "";
 }
+
+function formatYearMonth(value: string | undefined): string {
+  if (!value || value.length !== 6) return value ?? "";
+  return `${value.substring(0, 4)}/${value.substring(4, 6)}`;
+}
+
+const handleFormChange = (data: EmployeeFormData) => {
+  useEditFormStore.getState().setEditedShainData(data);
+};

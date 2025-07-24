@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import LogoutButton from "@/app/ui/employeesList/LogoutButton";
 import EmployeesEditForm from "@/app/ui/employeesEdit/EmployeesEditForm";
 import EmployeesCareerTable from "@/app/ui/employeesEdit/EmployeesCareerTable";
+import ManipulateButtons from "@/app/ui/employeesList/ManipulateButtons";
 
 export default async function EmployeesEditPage({
   params,
@@ -31,6 +32,7 @@ export default async function EmployeesEditPage({
       </div>
       <EmployeesEditForm initialData={base} />
       <EmployeesCareerTable keirekiList={base.keireki} />
+      {/* <EditButtons /> */}
     </div>
   );
 }
