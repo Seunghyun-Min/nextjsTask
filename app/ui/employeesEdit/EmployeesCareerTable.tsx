@@ -1,4 +1,8 @@
 // app/ui/employeesEdit/EmployeesCareerTable.tsx
+function formatDate(date: string | null | undefined): string {
+  if (!date) return "";
+  return date.replace(/-/g, "/");
+}
 
 export default function EmployeesCareerTable({
   keirekiList = [],
@@ -37,13 +41,30 @@ export default function EmployeesCareerTable({
             <th rowSpan={2}>言語</th>
           </tr>
           <tr>
-            <th>開始</th>
-            <th>終了</th>
+            <th style={{ backgroundColor: "#ffff99" }}>開始</th>
+            <th style={{ backgroundColor: "#ffff99" }}>終了</th>
           </tr>
         </thead>
         <tbody>
-          {/* データがあれば map、今は空でもOK */}
-          {/* 実装後はここに map を追加 */}
+          {keirekiList.length === 0 ? (
+            <tr>
+              <td colSpan={7} style={{ textAlign: "center" }}>
+                経歴情報がありません。
+              </td>
+            </tr>
+          ) : (
+            keirekiList.map((item, index) => (
+              <tr key={index}>
+                <td>{formatDate(item.start_date)}</td>
+                <td>{formatDate(item.end_date)}</td>
+                <td>{item.shokushu}</td>
+                <td>{item.gyomu_naiyo}</td>
+                <td>{item.kisyu}</td>
+                <td>{item.os_db}</td>
+                <td>{item.gengo}</td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

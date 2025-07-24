@@ -50,18 +50,16 @@ export type keireki = {
   update_shain_code: string; // varchar(6)
 };
 
-// export type shainWithKeireki = shain & {
-//   kishu1: string;
-//   kishu2: string | null;
-//   kishu3: string | null;
-//   os_db1: string;
-//   os_db2: string | null;
-//   os_db3: string | null;
-//   gengo1: string;
-//   gengo2: string | null;
-//   gengo3: string | null;
-//   // 必要なら他のkeirekiカラムも追加
-// };
+export type keirekiDisplay = {
+  keireki_id: string;
+  start_date: string;
+  end_date: string | null;
+  shokushu: string;
+  gyomu_naiyo: string;
+  kisyu: string;
+  os_db: string;
+  gengo: string;
+};
 
 export type shainWithKeireki = shain & {
   keireki: keireki[];

@@ -86,9 +86,9 @@ input {
   background-color: #ffff99;
   height: 60px;
 }
-.experiencelist tr:nth-of-type(2) {
+/* .experiencelist tr:nth-of-type(2) {
   background-color: #ffff99;
-}
+} */
 
 /*社員情報編集画面-下段の三つのボタンを囲むdivのデザイン*/
 .experiencemanipulatebuttoncontainer {

@@ -14,13 +14,8 @@ export default async function EmployeesEditPage({
 }) {
   const cookieStore = await cookies();
   const shainCode = cookieStore.get("shain_code")?.value;
-  const shainList = await getShainByCode(params.shain_code);
-
-  if (!shainList || shainList.length === 0) {
-    return notFound();
-  }
-
-  const base = shainList[0];
+  const base = await getShainByCode(params.shain_code);
+  if (!base) return notFound();
 
   if (!shainCode) {
     redirect("/");

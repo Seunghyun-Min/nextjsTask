@@ -6,6 +6,7 @@ import type {
   keireki,
   shainWithKeireki,
   EmployeeFormData,
+  keirekiDisplay,
 } from "./definitions";
 import { cookies } from "next/headers";
 
@@ -142,52 +143,84 @@ export async function addEmployee(
 
 export async function getShainByCode(
   shain_code: string
-): Promise<shainWithKeireki[] | null> {
-  try {
-    const result = await sql<shainWithKeireki[]>`
-      SELECT 
-        s.shain_code,
-        s.shain_shimei,
-        s.jyusho,
-        s.seinen_gappi,
-        s.keiken_nensu,
-        s.seibetsu,
-        s.shikaku,
-        s.moyorieki_sen,
-        s.moyorieki_eki,
-        s.gakureki_nen1,
-        s.gakureki1,
-        s.gakureki_nen2,
-        s.gakureki2,
-        s.update_date,
-        s.update_shain_code,
+): Promise<
+  (Omit<shainWithKeireki, "keireki"> & { keireki: keirekiDisplay[] }) | null
+> {
+  const result = await sql<any[]>`
+    SELECT 
+      s.shain_code,
+      s.shain_shimei,
+      s.jyusho,
+      s.seinen_gappi,
+      s.keiken_nensu,
+      s.seibetsu,
+      s.shikaku,
+      s.moyorieki_sen,
+      s.moyorieki_eki,
+      s.gakureki_nen1,
+      s.gakureki1,
+      s.gakureki_nen2,
+      s.gakureki2,
+      s.update_date,
+      s.update_shain_code,
 
-        k.keireki_id,
-        k.kikan_kaishi,
-        k.kikanshuryo,
-        k.shokushu,
-        k.gyoumu_naiyo,
-        k.kishu1,
-        k.kishu2,
-        k.kishu3,
-        k.os_db1,
-        k.os_db2,
-        k.os_db3,
-        k.gengo1,
-        k.gengo2,
-        k.gengo3,
-        k.update_date as keireki_update_date,
-        k.update_shain_code as keireki_update_shain_code
+      k.keireki_id,
+      k.kikan_kaishi,
+      k.kikanshuryo,
+      k.shokushu,
+      k.gyoumu_naiyo,
+      k.kishu1,
+      k.kishu2,
+      k.kishu3,
+      k.os_db1,
+      k.os_db2,
+      k.os_db3,
+      k.gengo1,
+      k.gengo2,
+      k.gengo3,
+      k.update_date as keireki_update_date,
+      k.update_shain_code as keireki_update_shain_code
+    FROM shain s
+    LEFT JOIN keireki k ON s.shain_code = k.shain_code
+    WHERE s.shain_code = ${shain_code}
+    ORDER BY k.kikan_kaishi DESC
+  `;
 
-      FROM shain s
-      LEFT JOIN keireki k ON s.shain_code = k.shain_code
-      WHERE s.shain_code = ${shain_code}
-      ORDER BY k.kikan_kaishi DESC
-    `;
+  if (!result || result.length === 0) return null;
 
-    return result.length > 0 ? result : null;
-  } catch (error) {
-    console.error("getShainByCode error:", error);
-    return null;
-  }
+  const base = result[0];
+
+  const keireki = result
+    .filter((row) => row.keireki_id !== null)
+    .map((row) => ({
+      keireki_id: row.keireki_id,
+      start_date: row.kikan_kaishi,
+      end_date: row.kikanshuryo,
+      shokushu: row.shokushu,
+      gyomu_naiyo: row.gyoumu_naiyo,
+      kisyu: [row.kishu1, row.kishu2, row.kishu3].filter(Boolean).join(", "),
+      os_db: [row.os_db1, row.os_db2, row.os_db3].filter(Boolean).join(", "),
+      gengo: [row.gengo1, row.gengo2, row.gengo3].filter(Boolean).join(", "),
+      update_date: row.keireki_update_date ?? "", // 👈 追加
+      update_shain_code: row.keireki_update_shain_code ?? "", // 👈 追加
+    }));
+
+  return {
+    shain_code: base.shain_code,
+    shain_shimei: base.shain_shimei,
+    jyusho: base.jyusho,
+    seinen_gappi: base.seinen_gappi,
+    keiken_nensu: base.keiken_nensu,
+    seibetsu: base.seibetsu,
+    shikaku: base.shikaku,
+    moyorieki_sen: base.moyorieki_sen,
+    moyorieki_eki: base.moyorieki_eki,
+    gakureki_nen1: base.gakureki_nen1,
+    gakureki1: base.gakureki1,
+    gakureki_nen2: base.gakureki_nen2,
+    gakureki2: base.gakureki2,
+    update_date: base.update_date,
+    update_shain_code: base.update_shain_code,
+    keireki,
+  };
 }

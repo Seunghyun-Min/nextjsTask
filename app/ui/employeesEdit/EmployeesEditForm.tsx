@@ -16,7 +16,7 @@ export default function EmployeesEditForm({ initialData }: Props) {
     shain_code: initialData.shain_code,
     employeename: initialData.shain_shimei,
     address: initialData.jyusho,
-    birthdate: formatDate(initialData.seinen_gappi ?? ""), // YYYY/MM/DD
+    birthdate: formatDate(initialData.seinen_gappi), // YYYY/MM/DD
     careeryear: initialData.keiken_nensu,
     gender: initialData.seibetsu,
     certificate: initialData.shikaku ?? "",
@@ -294,10 +294,13 @@ export default function EmployeesEditForm({ initialData }: Props) {
   );
 }
 
-// 生年月日フォーマット YYYY-MM-DD → YYYY/MM/DD
 function formatDate(date: Date | string | null | undefined): string {
   if (!date) return "";
-  if (typeof date === "string") return date; // すでにstringならそのまま
-  if (date instanceof Date) return date.toISOString().split("T")[0]; // YYYY-MM-DD 形式
+  if (typeof date === "string") {
+    return date.replace(/-/g, "/"); // ← 修正ポイント
+  }
+  if (date instanceof Date) {
+    return date.toISOString().split("T")[0].replace(/-/g, "/"); // ← 修正ポイント
+  }
   return "";
 }
